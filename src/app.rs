@@ -1,6 +1,7 @@
-use crate::domain::{DeletedTicket, TicketPatch};
-
-use super::domain::{Ticket, TicketDescription, TicketDraft, TicketId, TicketStore, TicketTitle};
+use crate::domain::{
+    DeletedTicket, Ticket, TicketDescription, TicketDraft, TicketId, TicketPatch, TicketStore,
+    TicketTitle,
+};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fs::read_to_string;
