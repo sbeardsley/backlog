@@ -1,12 +1,22 @@
-[package]
-name = "backlog"
-version = "0.1.0"
+[workspace]
+members = ["crates/backlog", "crates/ticketing"]
+resolver = "2"
+
+[workspace.package]
+rust-version = "1.78"
 edition = "2021"
+license = "MIT"
+authors = ["github.com/sbeardsley"]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[workspace.dependencies]
+# local crates
+ticketing = { path = "crates/ticketing", version = "0.0.0" }
 
-[dependencies]
-chrono = { version = "0.4.38", default-features = false, features = ["clock", "serde"] }
+# non-local crates
+chrono = { version = "0.4.38", default-features = false, features = [
+    "clock",
+    "serde",
+] }
 clap = { version = "4.5.4", features = ["derive"] }
 cli-table = "0.4.7"
 serde = { version = "1.0.203", features = ["derive"] }

@@ -1,11 +1,11 @@
-use crate::domain::{
-    DeletedTicket, Ticket, TicketDescription, TicketDraft, TicketId, TicketPatch, TicketStore,
-    TicketTitle,
-};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fs::read_to_string;
 use std::path::Path;
+use ticketing::model::{
+    DeletedTicket, Ticket, TicketDescription, TicketDraft, TicketId, TicketPatch, TicketTitle,
+};
+use ticketing::store::TicketStore;
 
 #[derive(Debug)]
 pub struct InitRequiredError;

@@ -1,7 +1,7 @@
 use backlog::app::BacklogApp;
-use backlog::domain::{Status, TicketDescription, TicketId, TicketRow, TicketTitle};
 use clap::{Parser, Subcommand};
 use cli_table::{print_stdout, WithTitle};
+use ticketing::model::{Status, TicketDescription, TicketId, TicketRow, TicketTitle};
 
 #[derive(Parser)]
 #[command(name = "backlog")]
@@ -101,7 +101,7 @@ fn main() {
                 }
             };
 
-            let patch = backlog::domain::TicketPatch {
+            let patch = ticketing::model::TicketPatch {
                 title,
                 description,
                 status,

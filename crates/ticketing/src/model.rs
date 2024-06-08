@@ -1,109 +1,27 @@
+use super::prelude::*;
 use chrono::{DateTime, Utc};
 use cli_table::Table;
 use core::str;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::error::Error;
 use std::fmt::Display;
 use std::str::FromStr;
 
-#[derive(Debug, PartialEq, Clone)]
-pub struct ValidationError(String);
-
-impl Error for ValidationError {}
-
-impl std::fmt::Display for ValidationError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(f, "{}", self.0)
-    }
+#[derive(Debug, Clone, PartialEq)]
+pub struct TicketDraft {
+    pub title: TicketTitle,
+    pub description: Option<TicketDescription>,
 }
 
-#[derive(Debug)]
-pub struct ParsingError(String);
-impl Error for ParsingError {}
-
-impl std::fmt::Display for ParsingError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(f, "{}", self.0)
-    }
+#[derive(Debug, Clone, PartialEq)]
+pub struct TicketPatch {
+    pub title: Option<TicketTitle>,
+    pub description: Option<TicketDescription>,
+    pub status: Option<Status>,
 }
 
-#[derive(Serialize, Deserialize)]
-pub struct TicketStore {
-    data: HashMap<TicketId, Ticket>,
-    current_id: u128,
-    key: String,
-}
-
-impl TicketStore {
-    pub fn new(key: String) -> TicketStore {
-        TicketStore {
-            data: HashMap::new(),
-            current_id: 0,
-            key,
-        }
-    }
-
-    pub fn save(&mut self, draft: TicketDraft) -> TicketId {
-        let id = self.generate_id();
-        let temp_description: TicketDescription;
-
-        if let Some(description) = draft.description {
-            temp_description = description;
-        } else {
-            temp_description = TicketDescription::default();
-        }
-
-        let now = Utc::now();
-        let ticket = Ticket {
-            id,
-            status: Status::ToDo,
-            key: format!("{}-{}", self.key, id),
-            title: draft.title,
-            description: temp_description,
-            created_at: now.clone(),
-            updated_at: now,
-        };
-        self.data.insert(id, ticket);
-        id
-    }
-
-    pub fn get(&self, id: &TicketId) -> Option<&Ticket> {
-        self.data.get(id)
-    }
-
-    pub fn list(&self) -> Vec<&Ticket> {
-        self.data.values().collect()
-    }
-
-    pub fn update(&mut self, id: &TicketId, patch: TicketPatch) -> Option<&Ticket> {
-        if let Some(ticket) = self.data.get_mut(id) {
-            if let Some(title) = patch.title {
-                ticket.title = title;
-            }
-            if let Some(description) = patch.description {
-                ticket.description = description;
-            }
-            if let Some(status) = patch.status {
-                ticket.status = status;
-            }
-            ticket.updated_at = Utc::now();
-            Some(ticket)
-        } else {
-            None
-        }
-    }
-    pub fn delete(&mut self, id: &TicketId) -> Option<DeletedTicket> {
-        self.data.remove(id).map(|ticket| DeletedTicket {
-            ticket,
-            deleted_at: Utc::now(),
-        })
-    }
-
-    fn generate_id(&mut self) -> TicketId {
-        self.current_id += 1;
-        self.current_id
-    }
+pub struct DeletedTicket {
+    pub ticket: Ticket,
+    pub deleted_at: DateTime<Utc>,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -260,6 +178,79 @@ impl Ticket {
     }
 }
 
+pub struct TicketBuilder {
+    id: TicketId,
+    key: String,
+    title: TicketTitle,
+    status: Status,
+    description: TicketDescription,
+    created_at: DateTime<Utc>,
+    updated_at: DateTime<Utc>,
+}
+
+impl TicketBuilder {
+    pub fn new(id: TicketId, key: String) -> Self {
+        Self {
+            id,
+            key,
+            title: TicketTitle("".to_string()),
+            status: Status::ToDo,
+            description: TicketDescription("".to_string()),
+            created_at: Utc::now(),
+            updated_at: Utc::now(),
+        }
+    }
+
+    pub fn from_ticket(ticket: &Ticket) -> Self {
+        Self {
+            id: ticket.id,
+            key: ticket.key.clone(),
+            title: ticket.title.clone(),
+            status: ticket.status.clone(),
+            description: ticket.description.clone(),
+            created_at: ticket.created_at.clone(),
+            updated_at: ticket.updated_at.clone(),
+        }
+    }
+
+    pub fn title(mut self, title: TicketTitle) -> Self {
+        self.title = title;
+        self
+    }
+
+    pub fn status(mut self, status: Status) -> Self {
+        self.status = status;
+        self
+    }
+
+    pub fn description(mut self, description: TicketDescription) -> Self {
+        self.description = description;
+        self
+    }
+
+    pub fn created_at(mut self, created_at: DateTime<Utc>) -> Self {
+        self.created_at = created_at;
+        self
+    }
+
+    pub fn updated_at(mut self, updated_at: DateTime<Utc>) -> Self {
+        self.updated_at = updated_at;
+        self
+    }
+
+    pub fn build(self) -> Ticket {
+        Ticket {
+            id: self.id,
+            key: self.key,
+            title: self.title,
+            status: self.status,
+            description: self.description,
+            created_at: self.created_at,
+            updated_at: self.updated_at,
+        }
+    }
+}
+
 #[derive(Table)]
 pub struct TicketRow {
     #[table(title = "ID")]
@@ -272,22 +263,4 @@ pub struct TicketRow {
     pub status: Status,
     #[table(title = "Description")]
     pub description: String,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct TicketDraft {
-    pub title: TicketTitle,
-    pub description: Option<TicketDescription>,
-}
-
-#[derive(Debug, Clone, PartialEq)]
-pub struct TicketPatch {
-    pub title: Option<TicketTitle>,
-    pub description: Option<TicketDescription>,
-    pub status: Option<Status>,
-}
-
-pub struct DeletedTicket {
-    pub ticket: Ticket,
-    pub deleted_at: DateTime<Utc>,
 }

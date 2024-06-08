@@ -1,0 +1,17 @@
+[package]
+name = "backlog"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = { workspace = true, default-features = false, features = [
+    "clock",
+    "serde",
+] }
+clap = { workspace = true, features = ["derive"] }
+cli-table = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+serde_yaml = { workspace = true }
+ticketing.workspace = true

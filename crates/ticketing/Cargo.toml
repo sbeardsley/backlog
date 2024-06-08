@@ -1,0 +1,12 @@
+[package]
+name = "ticketing"
+version = "0.0.0"
+edition = "2021"
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+chrono.workspace = true
+cli-table.workspace = true
+serde.workspace = true
