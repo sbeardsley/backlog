@@ -3,7 +3,6 @@ resolver = "2"
 members = ["backlog", "backlog_cli"]
 
 [workspace.package]
-name = "backlog"
 description = "A project management tool to track projects, boards, issues, workflows"
 readme = "README.md"
 homepage = "https://backlog.github.io"
