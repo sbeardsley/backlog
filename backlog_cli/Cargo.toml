@@ -1,11 +1,10 @@
 [package]
-name = "ticketing"
-version = "0.0.0"
+name = "backlog_cli"
 edition = "2021"
 rust-version.workspace = true
 license.workspace = true
+version.workspace = true
 authors.workspace = true
+include.workspace = true
 
 [dependencies]
-chrono.workspace = true
-serde.workspace = true

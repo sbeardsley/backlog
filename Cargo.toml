@@ -1,23 +1,17 @@
 [workspace]
-members = ["crates/backlog", "crates/ticketing"]
 resolver = "2"
+members = ["backlog", "backlog_cli"]
 
 [workspace.package]
+name = "backlog"
+description = "A project management tool to track projects, boards, issues, workflows"
+readme = "README.md"
+homepage = "https://backlog.github.io"
+repository = "https://github.com/sbeardsley/backlog"
+keywords = ["agile", "issues", "tracking"]
 rust-version = "1.78"
 edition = "2021"
 license = "MIT"
+version = "0.1.0"
 authors = ["github.com/sbeardsley"]
-
-[workspace.dependencies]
-# local crates
-ticketing = { path = "crates/ticketing", version = "0.0.0" }
-
-# non-local crates
-chrono = { version = "0.4.38", default-features = false, features = [
-    "clock",
-    "serde",
-] }
-clap = { version = "4.5.4", features = ["derive"] }
-cli-table = "0.4.7"
-serde = { version = "1.0.203", features = ["derive"] }
-serde_yaml = "0.9.34"
+include = ["src/**/*.rs", "tests/**/*.rs", "LICENSE-*", "README.md"]

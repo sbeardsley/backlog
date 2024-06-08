@@ -1,1 +1,6 @@
-/target
+.DS_Store
+target
+Cargo.lock
+!backlog_cli/Cargo.lock
+.env
+*.snap.new
