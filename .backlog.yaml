@@ -1,0 +1,23 @@
+name: backlog
+key: BAK
+path: .backlog.yaml
+store:
+  data:
+    2:
+      id: 2
+      key: BAK-2
+      title: create projects
+      status: ToDo
+      description: as a user I need the ability to create projects
+      created_at: 2024-06-08T16:47:45.940688Z
+      updated_at: 2024-06-08T16:47:45.940688Z
+    1:
+      id: 1
+      key: BAK-1
+      title: create board
+      status: ToDo
+      description: as a user I need the ability to create boards
+      created_at: 2024-06-08T16:44:49.230584Z
+      updated_at: 2024-06-08T16:44:49.230584Z
+  current_id: 2
+  key: BAK

@@ -10,3 +10,8 @@ keywords = ["backlog", "cli"]
 include = ["src/**/*.rs", "tests/**/*.rs", "LICENSE-*", "README.md"]
 
 [dependencies]
+
+
+[dependencies.backlog]
+path = "../backlog"
+default-features = false
