@@ -10,13 +10,6 @@ license.workspace = true
 authors.workspace = true
 version.workspace = true
 
-include = [
-    "src/**/*.rs",
-    "tests/**/*.rs",
-    "LICENSE-*",
-    "README.md",
-    "src/sqlite/connection/diesel_manage_updated_at.sql",
-    "src/migration/setup_migration_table.sql",
-]
+include = ["src/**/*.rs", "tests/**/*.rs", "LICENSE-*", "README.md"]
 
 [dependencies]
