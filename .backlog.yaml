@@ -7,10 +7,10 @@ store:
       id: 2
       key: BAK-2
       title: create projects
-      status: ToDo
+      status: Done
       description: as a user I need the ability to create projects
       created_at: 2024-06-08T16:47:45.940688Z
-      updated_at: 2024-06-08T16:47:45.940688Z
+      updated_at: 2024-06-08T19:57:43.507771Z
     1:
       id: 1
       key: BAK-1
