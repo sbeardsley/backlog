@@ -1,6 +1,5 @@
 use super::prelude::*;
 use chrono::{DateTime, Utc};
-use cli_table::Table;
 use core::str;
 use serde::{Deserialize, Serialize};
 use std::fmt::Display;
@@ -25,7 +24,7 @@ pub struct DeletedTicket {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct TicketTitle(String);
+pub struct TicketTitle(pub String);
 
 impl TicketTitle {
     pub fn new(title: String) -> Result<Self, ValidationError> {
@@ -63,7 +62,7 @@ impl FromStr for TicketTitle {
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct TicketDescription(String);
+pub struct TicketDescription(pub String);
 
 impl TicketDescription {
     pub fn new(description: String) -> Result<Self, ValidationError> {
@@ -151,6 +150,9 @@ impl Ticket {
     pub fn title(&self) -> &TicketTitle {
         &self.title
     }
+    pub fn key(&self) -> &String {
+        &self.key
+    }
     pub fn description(&self) -> &TicketDescription {
         &self.description
     }
@@ -165,16 +167,6 @@ impl Ticket {
     }
     pub fn updated_at(&self) -> &DateTime<Utc> {
         &self.updated_at
-    }
-
-    pub fn to_table_row(&self) -> TicketRow {
-        TicketRow {
-            id: self.id,
-            key: self.key.clone(),
-            title: self.title.clone().0,
-            status: self.status.clone(),
-            description: self.description.clone().0,
-        }
     }
 }
 
@@ -249,18 +241,4 @@ impl TicketBuilder {
             updated_at: self.updated_at,
         }
     }
-}
-
-#[derive(Table)]
-pub struct TicketRow {
-    #[table(title = "ID")]
-    pub id: u128,
-    #[table(title = "Key")]
-    pub key: String,
-    #[table(title = "Title")]
-    pub title: String,
-    #[table(title = "Status")]
-    pub status: Status,
-    #[table(title = "Description")]
-    pub description: String,
 }

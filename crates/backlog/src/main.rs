@@ -1,7 +1,34 @@
 use backlog::app::BacklogApp;
 use clap::{Parser, Subcommand};
+use cli_table::Table;
 use cli_table::{print_stdout, WithTitle};
-use ticketing::model::{Status, TicketDescription, TicketId, TicketRow, TicketTitle};
+use ticketing::model::{Status, TicketDescription, TicketId, TicketTitle};
+
+#[derive(Table)]
+pub struct TicketRow {
+    #[table(title = "ID")]
+    pub id: u128,
+    #[table(title = "Key")]
+    pub key: String,
+    #[table(title = "Title")]
+    pub title: String,
+    #[table(title = "Status")]
+    pub status: Status,
+    #[table(title = "Description")]
+    pub description: String,
+}
+
+impl From<&ticketing::model::Ticket> for TicketRow {
+    fn from(ticket: &ticketing::model::Ticket) -> Self {
+        TicketRow {
+            id: ticket.id().clone(),
+            key: ticket.key().clone(),
+            title: ticket.title().0.clone(),
+            status: ticket.status().clone(),
+            description: ticket.description().0.clone(),
+        }
+    }
+}
 
 #[derive(Parser)]
 #[command(name = "backlog")]
@@ -83,7 +110,7 @@ fn main() {
 
             let sorted = tickets
                 .iter()
-                .map(|ticket| ticket.to_table_row())
+                .map(|ticket| TicketRow::from(*ticket))
                 .collect::<Vec<TicketRow>>();
             print_stdout(sorted.with_title()).unwrap();
         }

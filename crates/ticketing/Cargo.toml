@@ -8,5 +8,4 @@ authors.workspace = true
 
 [dependencies]
 chrono.workspace = true
-cli-table.workspace = true
 serde.workspace = true
