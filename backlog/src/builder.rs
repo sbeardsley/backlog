@@ -32,10 +32,10 @@ pub struct NoFileFormatBuilderType;
 pub struct YamlFileFormatBuilderType(String);
 
 #[derive(Default, Clone)]
-pub struct JsonFileFormatBuilderType(String);
+pub struct JsonFileFormatBuilderType; //(String);
 
 #[derive(Default, Clone)]
-pub struct TomlFileFormatBuilderType(String);
+pub struct TomlFileFormatBuilderType; //(String);
 
 #[derive(Default, Clone)]
 pub struct NoDbBuilderType;
@@ -62,9 +62,9 @@ pub struct RocksDbBuilderType;
 #[derive(Clone)]
 pub struct BacklogBuilder<C, S, F, D> {
     config: C,
-    storage: S,
+    _marker: std::marker::PhantomData<S>,
     file_format: F,
-    db_type: D,
+    _db_type: D,
 }
 
 impl Default
@@ -73,9 +73,9 @@ impl Default
     fn default() -> Self {
         BacklogBuilder {
             config: NoConfig,
-            storage: NoStorageBuilderType,
+            _marker: std::marker::PhantomData,
             file_format: NoFileFormatBuilderType,
-            db_type: NoDbBuilderType,
+            _db_type: NoDbBuilderType,
         }
     }
 }
@@ -92,9 +92,9 @@ impl BacklogBuilder<NoConfig, NoStorageBuilderType, NoFileFormatBuilderType, NoD
     {
         BacklogBuilder {
             config: Config(config),
-            storage: NoStorageBuilderType,
+            _marker: std::marker::PhantomData,
             file_format: NoFileFormatBuilderType,
-            db_type: NoDbBuilderType,
+            _db_type: NoDbBuilderType,
         }
     }
 }
@@ -106,9 +106,9 @@ impl BacklogBuilder<Config, NoStorageBuilderType, NoFileFormatBuilderType, NoDbB
     {
         BacklogBuilder {
             config: self.config,
-            storage: FileStorageBuilderType,
+            _marker: std::marker::PhantomData,
             file_format: NoFileFormatBuilderType,
-            db_type: NoDbBuilderType,
+            _db_type: NoDbBuilderType,
         }
     }
     pub fn with_db_storage(
@@ -117,9 +117,9 @@ impl BacklogBuilder<Config, NoStorageBuilderType, NoFileFormatBuilderType, NoDbB
     {
         BacklogBuilder {
             config: self.config,
-            storage: DbStorageBuilderType,
+            _marker: std::marker::PhantomData,
             file_format: NoFileFormatBuilderType,
-            db_type: NoDbBuilderType,
+            _db_type: NoDbBuilderType,
         }
     }
 }
@@ -132,9 +132,9 @@ impl BacklogBuilder<Config, FileStorageBuilderType, NoFileFormatBuilderType, NoD
     {
         BacklogBuilder {
             config: self.config,
-            storage: FileStorageBuilderType,
+            _marker: std::marker::PhantomData,
             file_format: YamlFileFormatBuilderType(path.into()),
-            db_type: NoDbBuilderType,
+            _db_type: NoDbBuilderType,
         }
     }
 }
@@ -145,7 +145,6 @@ impl BacklogBuilder<Config, FileStorageBuilderType, YamlFileFormatBuilderType, N
         let storage = FileStorage::new(yaml);
         let repository = ProjectRepository::new(storage);
 
-        let backlog = Backlog::new(self.config.0, repository);
-        backlog
+        Backlog::new(self.config.0, repository)
     }
 }

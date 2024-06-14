@@ -11,6 +11,7 @@ include = ["src/**/*.rs", "tests/**/*.rs", "LICENSE-*", "README.md"]
 
 [dependencies]
 clap = { features = ["derive"] }
+thiserror = "1.0.61"
 
 [dependencies.backlog]
 path = "../backlog"

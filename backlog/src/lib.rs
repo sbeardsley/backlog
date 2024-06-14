@@ -19,8 +19,8 @@ pub struct Backlog<T>
 where
     T: Storage,
 {
-    config: BacklogConfig,
-    projects: ProjectRepository<T>,
+    _config: BacklogConfig,
+    _projects: ProjectRepository<T>,
 }
 
 impl<T> Backlog<T>
@@ -28,7 +28,10 @@ where
     T: Storage,
 {
     pub fn new(config: BacklogConfig, projects: ProjectRepository<T>) -> Self {
-        Self { config, projects }
+        Self {
+            _config: config,
+            _projects: projects,
+        }
     }
 }
 

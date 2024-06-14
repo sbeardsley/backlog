@@ -47,7 +47,7 @@ impl Filestore for Yaml {
         })?;
 
         let dir_path = path.parent().ok_or_else(|| {
-            FileSystemStorageError::FileSaveError(format!("Failed to get parent directory"))
+            FileSystemStorageError::FileSaveError("Failed to get parent directory".to_string())
         })?;
 
         DirBuilder::new()
@@ -56,7 +56,7 @@ impl Filestore for Yaml {
             .map_err(|_| {
                 FileSystemStorageError::FileSaveError(format!(
                     "Failed to create directory: {}",
-                    dir_path.display().to_string()
+                    dir_path.display()
                 ))
             })?;
         write(

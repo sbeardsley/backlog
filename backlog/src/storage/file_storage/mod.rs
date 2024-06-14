@@ -86,7 +86,7 @@ where
             ProjectQuery::UpdateProject(id, patch) => self
                 .projects
                 .insert(id, patch.clone())
-                .ok_or_else(|| ProjectStorageError::ProjectUpdateFailed),
+                .ok_or(ProjectStorageError::ProjectUpdateFailed),
             _ => Err(ProjectStorageError::ProjectUpdateFailed),
         }
     }

@@ -1,7 +1,4 @@
-use std::{
-    default,
-    fs::{read_to_string, write, DirBuilder},
-};
+use std::fs::{read_to_string, write, DirBuilder};
 
 use crate::BacklogError;
 use expanduser::expanduser;
@@ -54,7 +51,7 @@ impl Default for BacklogConfig {
 }
 
 impl BacklogConfig {
-    pub(crate) fn new() -> Self {
+    pub fn new() -> Self {
         Self::default()
     }
     pub fn storage_type(&self) -> &StorageType {
@@ -99,7 +96,7 @@ impl BacklogConfig {
         })?;
 
         let dir_path = path.parent().ok_or_else(|| {
-            BacklogError::BacklogConfigLoadError(format!("Failed to get parent directory"))
+            BacklogError::BacklogConfigLoadError("Failed to get parent directory".to_string())
         })?;
 
         DirBuilder::new()
@@ -108,18 +105,18 @@ impl BacklogConfig {
             .map_err(|_| {
                 BacklogError::BacklogConfigLoadError(format!(
                     "Failed to create directory: {}",
-                    dir_path.display().to_string()
+                    dir_path.display()
                 ))
             })?;
 
         let data = toml::to_string(self).map_err(|_| {
-            BacklogError::BacklogConfigSaveError(format!("Failed to serialize config to toml"))
+            BacklogError::BacklogConfigSaveError("Failed to serialize config to toml".to_string())
         })?;
 
         write(&path, data).map_err(|_| {
             BacklogError::BacklogConfigSaveError(format!(
                 "Failed to save config to file: {}",
-                path.display().to_string()
+                path.display()
             ))
         })?;
 
