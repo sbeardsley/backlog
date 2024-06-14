@@ -15,15 +15,20 @@ version.workspace = true
 include = ["src/**/*.rs", "tests/**/*.rs", "LICENSE-*", "README.md"]
 
 [dependencies]
+anyhow = "1.0.86"
 chrono = { optional = true, version = "0.4.38", default-features = false, features = [
     "clock",
     "serde",
 ] }
-serde = { optional = true, version = "1.0.203", features = ["derive"] }
+expanduser = "1.2.2"
+serde = { version = "1.0.203", features = ["derive"] }
+serde_yaml = { version = "0.9.34", optional = true }
+thiserror = "1.0.61"
+toml = "0.8.14"
 
 
 [features]
 default = ["extras"]
-extras = ["chrono", "serde"]
+extras = ["chrono", "yaml"]
 chrono = ["dep:chrono"]
-serde = ["dep:serde"]
+yaml = ["dep:serde_yaml"]
