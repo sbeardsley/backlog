@@ -1,5 +1,5 @@
 [package]
-name = "backlog"
+name = "infra"
 edition = "2021"
 description.workspace = true
 readme.workspace = true
@@ -14,5 +14,3 @@ include.workspace = true
 
 [dependencies]
 core = { path = "../core" }
-infra = { path = "../infra" }
-tokio = { version = "1.38.0", features = ["full"] }

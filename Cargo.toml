@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
-members = ["backlog", "backlog_cli"]
-default-members = ["backlog_cli"]
+members = ["backlog", "core", "http_server", "infra"]
+default-members = ["backlog"]
 
 [workspace.package]
 description = "A project management tool to track projects, boards, issues, workflows"
