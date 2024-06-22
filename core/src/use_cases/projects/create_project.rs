@@ -1,25 +1,23 @@
 use crate::{
-    entities::project::Project,
-    interfaces::{
-        repositories::projects::create_post::CreateProjectRepository,
-        use_cases::projects::create_project::{
-            CreateProjectError, CreateProjectUseCase, ProjectDraft,
-        },
+    interfaces::{ports::CreateProjectRepository, use_cases::CreateProjectUseCase},
+    models::{
+        dto::{NewProject, ProjectDraft},
+        errors::CreateProjectError,
     },
 };
 
-pub struct CreateProject<T: CreateProjectRepository> {
-    repository: T,
+pub struct CreateProject<R: CreateProjectRepository> {
+    repository: R,
 }
 
-impl<T: CreateProjectRepository> CreateProject<T> {
-    pub fn new(repository: T) -> Self {
+impl<R: CreateProjectRepository> CreateProject<R> {
+    pub fn new(repository: R) -> Self {
         Self { repository }
     }
 }
 
-impl<T: CreateProjectRepository> CreateProjectUseCase for CreateProject<T> {
-    async fn execute(&self, project: ProjectDraft) -> Result<Project, CreateProjectError> {
+impl<R: CreateProjectRepository> CreateProjectUseCase for CreateProject<R> {
+    async fn execute(&self, project: ProjectDraft) -> Result<NewProject, CreateProjectError> {
         self.repository.create_project(project).await
     }
 }

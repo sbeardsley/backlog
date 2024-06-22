@@ -1,1 +1,1 @@
-pub mod projects;
+pub(crate) mod projects;

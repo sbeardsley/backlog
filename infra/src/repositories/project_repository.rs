@@ -1,8 +1,9 @@
 use core::{
-    entities::project::Project,
-    interfaces::{
-        repositories::projects::create_post::CreateProjectRepository,
-        use_cases::projects::create_project::{CreateProjectError, ProjectDraft},
+    entities::Project,
+    interfaces::ports::CreateProjectRepository,
+    models::{
+        dto::{NewProject, ProjectDraft},
+        errors::CreateProjectError,
     },
 };
 use std::sync::Mutex;
@@ -19,16 +20,19 @@ impl InMemoryRepository {
 }
 
 impl CreateProjectRepository for InMemoryRepository {
-    async fn create_project(&self, project: ProjectDraft) -> Result<Project, CreateProjectError> {
+    async fn create_project(
+        &self,
+        project: ProjectDraft,
+    ) -> Result<NewProject, CreateProjectError> {
         let mut lock = match self.projects.lock() {
             Ok(lock) => lock,
             Err(_) => return Err(CreateProjectError::Unknown),
         };
 
-        let mut project = Project::new(project.key, project.name, project.description);
-        project.id = (lock.len() as u32) + 1;
+        let id = (lock.len() as u32) + 1;
+        let project = Project::new(id, project.key, project.name, project.description);
 
         lock.push(project.clone());
-        Ok(project)
+        Ok(project.into())
     }
 }

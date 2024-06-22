@@ -13,6 +13,7 @@ authors.workspace = true
 include.workspace = true
 
 [dependencies]
+clap = { version = "4.5.7", features = ["derive"] }
 core = { path = "../core" }
 infra = { path = "../infra" }
 tokio = { version = "1.38.0", features = ["full"] }

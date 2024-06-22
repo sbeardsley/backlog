@@ -1,3 +1,5 @@
 pub mod entities;
 pub mod interfaces;
-pub mod use_cases;
+pub mod models;
+pub mod services;
+pub(crate) mod use_cases;
