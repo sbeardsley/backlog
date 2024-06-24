@@ -1,13 +1,6 @@
 use clap::Args;
-use core::{
-    app::{contracts::CreateProjectCommandHandler, services::CreateProjectService},
-    domain::models::CreateProjectCommand,
-};
-use infra::repositories::{
-    create_project_repository::CreateProjectRepository,
-    sqlite_connection_pool::SqliteConnectionPool,
-};
-use std::sync::Arc;
+use core::domain::models::CreateProjectCommand;
+use infra::app::App;
 
 #[derive(Debug, Args)]
 pub struct ProjectAddArgs {
@@ -30,14 +23,6 @@ impl From<ProjectAddArgs> for CreateProjectCommand {
 }
 
 pub async fn run(project: CreateProjectCommand) {
-    let db_url = "sqlite://.backlog.db";
-    let pool = SqliteConnectionPool::new(db_url).await.unwrap();
-    let repository = CreateProjectRepository::new(Arc::new(pool.clone()));
-    let create_project_service = CreateProjectService::new(repository);
-    create_project_service
-        .handle(project)
-        .await
-        .expect("Failed to create project");
-    println!("Project created successfully");
-    pool.close().await;
+    let app = App::new("sqlite://.backlog.db").await;
+    app.run(project).await;
 }

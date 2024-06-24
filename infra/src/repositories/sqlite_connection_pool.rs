@@ -3,7 +3,6 @@ use sqlx::{migrate::MigrateDatabase, pool::PoolConnection, Pool, Sqlite, SqliteP
 
 #[derive(Debug, Clone)]
 pub struct SqliteConnectionPool {
-    db_url: String,
     pool: Pool<Sqlite>,
 }
 
@@ -16,10 +15,7 @@ impl SqliteConnectionPool {
             .await
             .map_err(|_| ConnectionError::ConnectionFailed)?;
 
-        Ok(Self {
-            db_url: db_url.to_string(),
-            pool,
-        })
+        Ok(Self { pool })
     }
 
     pub async fn close(&self) {
