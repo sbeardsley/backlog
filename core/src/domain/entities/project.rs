@@ -1,22 +1,22 @@
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct ProjectId(u32);
+#[derive(Debug, Clone)]
+pub struct ProjectId(Uuid);
 
-impl From<u32> for ProjectId {
-    fn from(id: u32) -> Self {
+impl From<Uuid> for ProjectId {
+    fn from(id: Uuid) -> Self {
         Self(id)
     }
 }
 
-impl From<ProjectId> for u32 {
+impl From<ProjectId> for Uuid {
     fn from(id: ProjectId) -> Self {
         id.0
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Clone)]
 pub struct ProjectKey(String);
 
 impl From<String> for ProjectKey {
@@ -31,7 +31,7 @@ impl From<ProjectKey> for String {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Clone)]
 pub struct ProjectName(String);
 
 impl From<String> for ProjectName {
@@ -46,7 +46,7 @@ impl From<ProjectName> for String {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Clone)]
 pub struct ProjectDescription(String);
 
 impl From<String> for ProjectDescription {
@@ -61,7 +61,7 @@ impl From<ProjectDescription> for String {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Clone)]
 pub struct Project {
     pub id: ProjectId,
     pub key: ProjectKey,
@@ -72,7 +72,7 @@ pub struct Project {
 }
 
 impl Project {
-    pub fn new(id: u32, key: String, name: String, description: String) -> Self {
+    pub fn new(id: Uuid, key: String, name: String, description: String) -> Self {
         let now = Utc::now();
         Self {
             id: ProjectId::from(id),

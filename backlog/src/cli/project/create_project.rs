@@ -1,10 +1,13 @@
-use core::{
-    interfaces::ports::{CreateProjectCommand, CreateProjectCommandHandler},
-    services::CreateProjectService,
-};
-
 use clap::Args;
-use infra::repositories::project_repository::InMemoryRepository;
+use core::{
+    app::{contracts::CreateProjectCommandHandler, services::CreateProjectService},
+    domain::models::CreateProjectCommand,
+};
+use infra::repositories::{
+    create_project_repository::CreateProjectRepository,
+    sqlite_connection_pool::SqliteConnectionPool,
+};
+use std::sync::Arc;
 
 #[derive(Debug, Args)]
 pub struct ProjectAddArgs {
@@ -27,11 +30,14 @@ impl From<ProjectAddArgs> for CreateProjectCommand {
 }
 
 pub async fn run(project: CreateProjectCommand) {
-    let repository = InMemoryRepository::new();
-    let service = CreateProjectService::new(repository);
-
-    match service.handle(project).await {
-        Ok(_) => println!("Project created successfully"),
-        Err(e) => println!("Error creating project: {:?}", e),
-    }
+    let db_url = "sqlite://.backlog.db";
+    let pool = SqliteConnectionPool::new(db_url).await.unwrap();
+    let repository = CreateProjectRepository::new(Arc::new(pool.clone()));
+    let create_project_service = CreateProjectService::new(repository);
+    create_project_service
+        .handle(project)
+        .await
+        .expect("Failed to create project");
+    println!("Project created successfully");
+    pool.close().await;
 }

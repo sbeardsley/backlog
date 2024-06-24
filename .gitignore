@@ -4,3 +4,5 @@ Cargo.lock
 !backlog_cli/Cargo.lock
 .env
 *.snap.new
+
+backlog.db*

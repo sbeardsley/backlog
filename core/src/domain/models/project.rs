@@ -1,10 +1,17 @@
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
-use crate::{entities::Project, interfaces::ports::CreateProjectCommand};
+use crate::domain::entities::Project;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct ProjectDraft {
+    pub key: String,
+    pub name: String,
+    pub description: String,
+}
+
+#[derive(Debug)]
+pub struct CreateProjectCommand {
     pub key: String,
     pub name: String,
     pub description: String,
@@ -20,9 +27,9 @@ impl From<CreateProjectCommand> for ProjectDraft {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, Default)]
+#[derive(Debug, Clone, Default)]
 pub struct NewProject {
-    pub id: u32,
+    pub id: Uuid,
     pub key: String,
     pub name: String,
     pub description: String,

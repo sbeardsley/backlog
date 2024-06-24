@@ -1,9 +1,7 @@
 mod cli;
-
-use core::interfaces::ports::CreateProjectCommand;
-
 use clap::{Args, Parser, Subcommand};
 use cli::project::create_project::{self, ProjectAddArgs};
+use core::domain::models::CreateProjectCommand;
 
 #[derive(Parser)]
 #[command(version, about)]

@@ -13,5 +13,8 @@ authors.workspace = true
 include.workspace = true
 
 [dependencies]
+anyhow = { version = "1.0.86", features = ["std", "backtrace"] }
 chrono = { version = "0.4.38", features = ["serde"] }
 serde = { version = "1.0.203", features = ["derive"] }
+thiserror = "1.0.61"
+uuid = { version = "1.8.0", features = ["v4", "v7", "serde", "fast-rng", "macro-diagnostics"] }
