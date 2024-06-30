@@ -1,0 +1,241 @@
+{
+    // Place your budget workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+    // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+    // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+    // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+    // Placeholders with the same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"scope": "javascript,typescript",
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+
+    "create entity app service": {
+        "scope": "rust",
+        "prefix": "serv_app_create",
+        "body": [
+            "use uuid::Uuid;",
+            "use core::{",
+            "    app::contracts::Create${1/(.*)/${1:/pascalcase}/}CommandHandler,",
+            "    domain::{",
+            "        errors::Create${1/(.*)/${1:/pascalcase}/}Error,",
+            "        models::{${1/(.*)/${1:/pascalcase}/}Draft, Create${1/(.*)/${1:/pascalcase}/}Command},",
+            "        usecases::Create${1/(.*)/${1:/pascalcase}/}UseCase,",
+            "    },",
+            "    repositories::Create${1/(.*)/${1:/pascalcase}/}RepositoryContract,",
+            "};",
+            "",
+            "pub struct Create${1/(.*)/${1:/pascalcase}/}Service<T: Create${1/(.*)/${1:/pascalcase}/}RepositoryContract> {",
+            "    create_${1/(.*)/${1:/downcase}/}: core::domain::services::Create${1/(.*)/${1:/pascalcase}/}Service<T>,",
+            "}",
+            "",
+            "impl<T: Create${1/(.*)/${1:/pascalcase}/}RepositoryContract> Create${1/(.*)/${1:/pascalcase}/}Service<T> {",
+            "    pub fn new(repository: T) -> Self {",
+            "        Self {",
+            "            create_${1/(.*)/${1:/downcase}/}: core::domain::services::Create${1/(.*)/${1:/pascalcase}/}Service::new(repository),",
+            "        }",
+            "    }",
+            "}",
+            "",
+            "impl<T: Create${1/(.*)/${1:/pascalcase}/}RepositoryContract> Create${1/(.*)/${1:/pascalcase}/}CommandHandler for Create${1/(.*)/${1:/pascalcase}/}Service<T> {",
+            "    async fn handle(&self, command: Create${1/(.*)/${1:/pascalcase}/}Command) -> Result<Uuid, Create${1/(.*)/${1:/pascalcase}/}Error> {",
+            "        match self",
+            "            .create_${1/(.*)/${1:/downcase}/}",
+            "            .create_${1/(.*)/${1:/downcase}/}(${1/(.*)/${1:/pascalcase}/}Draft::from(command))",
+            "            .await",
+            "        {",
+            "            Ok(p) => Ok(p.id),",
+            "            Err(e) => Err(e),",
+            "        }",
+            "    }",
+            "}"
+        ]
+    },
+    "update entity app service": {
+        "scope": "rust",
+        "prefix": "serv_app_update",
+        "body": [
+            "use core::{",
+            "    app::contracts::Update${1/(.*)/${1:/pascalcase}/}CommandHandler,",
+            "    domain::{",
+            "        errors::Update${1/(.*)/${1:/pascalcase}/}Error,",
+            "        models::{${1/(.*)/${1:/pascalcase}/}Patch, Update${1/(.*)/${1:/pascalcase}/}Command},",
+            "        usecases::Update${1/(.*)/${1:/pascalcase}/}UseCase,",
+            "    },",
+            "    repositories::Update${1/(.*)/${1:/pascalcase}/}RepositoryContract,",
+            "};",
+            "",
+            "pub struct Update${1/(.*)/${1:/pascalcase}/}Service<T: Update${1/(.*)/${1:/pascalcase}/}RepositoryContract> {",
+            "    update_${1/(.*)/${1:/downcase}/}: core::domain::services::Update${1/(.*)/${1:/pascalcase}/}Service<T>,",
+            "}",
+            "",
+            "impl<T: Update${1/(.*)/${1:/pascalcase}/}RepositoryContract> Update${1/(.*)/${1:/pascalcase}/}Service<T> {",
+            "    pub fn new(repository: T) -> Self {",
+            "        Self {",
+            "            update_${1/(.*)/${1:/downcase}/}: core::domain::services::Update${1/(.*)/${1:/pascalcase}/}Service::new(repository),",
+            "        }",
+            "    }",
+            "}",
+            "",
+            "impl<T: Update${1/(.*)/${1:/pascalcase}/}RepositoryContract> Update${1/(.*)/${1:/pascalcase}/}CommandHandler for Update${1/(.*)/${1:/pascalcase}/}Service<T> {",
+            "    async fn handle(&self, command: Update${1/(.*)/${1:/pascalcase}/}Command) -> Result<(), Update${1/(.*)/${1:/pascalcase}/}Error> {",
+            "        match self",
+            "            .update_${1/(.*)/${1:/downcase}/}",
+            "            .update_${1/(.*)/${1:/downcase}/}(command.id, ${1/(.*)/${1:/pascalcase}/}Patch::from(command))",
+            "            .await",
+            "        {",
+            "            Ok(_) => Ok(()),",
+            "            Err(e) => Err(e),",
+            "        }",
+            "    }",
+            "}"
+        ]
+    },
+    "get one entity app service": {
+        "scope": "rust",
+        "prefix": "serv_app_get_one",
+        "body": [
+            "use core::{",
+            "    app::contracts::GetOne${1/(.*)/${1:/pascalcase}/}QueryHandler,",
+            "    domain::{",
+            "        errors::GetOne${1/(.*)/${1:/pascalcase}/}Error,",
+            "        models::{GetOne${1/(.*)/${1:/pascalcase}/}Query, GetOne${1/(.*)/${1:/pascalcase}/}QueryResult},",
+            "        usecases::GetOne${1/(.*)/${1:/pascalcase}/}UseCase,",
+            "    },",
+            "    repositories::GetOne${1/(.*)/${1:/pascalcase}/}RepositoryContract,",
+            "};",
+            "",
+            "pub struct GetOne${1/(.*)/${1:/pascalcase}/}Service<T: GetOne${1/(.*)/${1:/pascalcase}/}RepositoryContract> {",
+            "    get_one_${1/(.*)/${1:/downcase}/}: core::domain::services::GetOne${1/(.*)/${1:/pascalcase}/}Service<T>,",
+            "}",
+            "",
+            "impl<T: GetOne${1/(.*)/${1:/pascalcase}/}RepositoryContract> GetOne${1/(.*)/${1:/pascalcase}/}Service<T> {",
+            "    pub fn new(repository: T) -> Self {",
+            "        Self {",
+            "            get_one_${1/(.*)/${1:/downcase}/}: core::domain::services::GetOne${1/(.*)/${1:/pascalcase}/}Service::new(repository),",
+            "        }",
+            "    }",
+            "}",
+            "",
+            "impl<T: GetOne${1/(.*)/${1:/pascalcase}/}RepositoryContract> GetOne${1/(.*)/${1:/pascalcase}/}QueryHandler for GetOne${1/(.*)/${1:/pascalcase}/}Service<T> {",
+            "    async fn handle(&self, query: GetOne${1/(.*)/${1:/pascalcase}/}Query) -> Result<GetOne${1/(.*)/${1:/pascalcase}/}QueryResult, GetOne${1/(.*)/${1:/pascalcase}/}Error> {",
+            "        match self",
+            "            .get_one_${1/(.*)/${1:/downcase}/}",
+            "            .get_one_${1/(.*)/${1:/downcase}/}(query.${1/(.*)/${1:/downcase}/}_id).await",
+            "        {",
+            "            Ok(${1/(.*)/${1:/downcase}/}) => match ${1/(.*)/${1:/downcase}/} {",
+            "               Some(${1/(.*)/${1:/downcase}/}) => Ok(GetOne${1/(.*)/${1:/pascalcase}/}QueryResult::from(${1/(.*)/${1:/downcase}/})),",
+            "               None => Err(GetOne${1/(.*)/${1:/pascalcase}/}Error::Unknown),",
+            "            },",
+            "            Err(e) => Err(e),",
+            "        }",
+            "    }",
+            "}"
+        ]
+    },
+    "get all entity app service": {
+        "scope": "rust",
+        "prefix": "serv_app_get_all",
+        "body": [
+            "use core::{",
+            "    app::contracts::GetAll${1/(.*)/${1:/pascalcase}/}sQueryHandler,",
+            "    domain::{",
+            "        errors::GetAll${1/(.*)/${1:/pascalcase}/}sError,",
+            "        models::{GetAll${1/(.*)/${1:/pascalcase}/}sQuery, GetAll${1/(.*)/${1:/pascalcase}/}sQueryResult},",
+            "        usecases::GetAll${1/(.*)/${1:/pascalcase}/}sUseCase,",
+            "    },",
+            "    repositories::GetAll${1/(.*)/${1:/pascalcase}/}sRepositoryContract,",
+            "};",
+            "",
+            "pub struct GetAll${1/(.*)/${1:/pascalcase}/}sService<T: GetAll${1/(.*)/${1:/pascalcase}/}sRepositoryContract> {",
+            "    get_all_${1/(.*)/${1:/downcase}/}s: core::domain::services::GetAll${1/(.*)/${1:/pascalcase}/}sService<T>,",
+            "}",
+            "",
+            "impl<T: GetAll${1/(.*)/${1:/pascalcase}/}sRepositoryContract> GetAll${1/(.*)/${1:/pascalcase}/}sService<T> {",
+            "    pub fn new(repository: T) -> Self {",
+            "        Self {",
+            "            get_all_${1/(.*)/${1:/downcase}/}s: core::domain::services::GetAll${1/(.*)/${1:/pascalcase}/}sService::new(repository),",
+            "        }",
+            "    }",
+            "}",
+            "",
+            "impl<T: GetAll${1/(.*)/${1:/pascalcase}/}sRepositoryContract> GetAll${1/(.*)/${1:/pascalcase}/}sQueryHandler for GetAll${1/(.*)/${1:/pascalcase}/}sService<T> {",
+            "    async fn handle(&self, query: GetAll${1/(.*)/${1:/pascalcase}/}sQuery) -> Result<Vec<GetAll${1/(.*)/${1:/pascalcase}/}sQueryResult>, GetAll${1/(.*)/${1:/pascalcase}/}sError> {",
+            "        match self",
+            "            .get_all_${1/(.*)/${1:/downcase}/}s",
+            "            .get_all_${1/(.*)/${1:/downcase}/}s(query.user_id).await",
+            "        {",
+            "            Ok(${1/(.*)/${1:/downcase}/}) => Ok(${1/(.*)/${1:/downcase}/}",
+            "                .into_iter()",
+            "                .map(|b| GetAll${1/(.*)/${1:/pascalcase}/}sQueryResult::from(b))",
+            "                .collect()),",
+            "            Err(e) => Err(e),",
+            "        }",
+            "    }",
+            "}"
+        ]
+    },
+    "create entity app command handler": {
+        "scope": "rust",
+        "prefix": "cmdh_app_create",
+        "body": [
+            "use crate::domain::{errors::Create${1/(.*)/${1:/pascalcase}/}Error, models::Create${1/(.*)/${1:/pascalcase}/}Command};",
+            "use uuid::Uuid;",
+            "",
+            "pub trait Create${1/(.*)/${1:/pascalcase}/}CommandHandler {",
+            "    fn handle(",
+            "        &self,",
+            "        command: Create${1/(.*)/${1:/pascalcase}/}Command,",
+            "    ) -> impl std::future::Future<Output = Result<Uuid, Create${1/(.*)/${1:/pascalcase}/}Error>> + Send;",
+            "}"
+        ]
+    },
+    "update entity app command handler": {
+        "scope": "rust",
+        "prefix": "cmdh_app_update",
+        "body": [
+            "use crate::domain::{errors::Update${1/(.*)/${1:/pascalcase}/}Error, models::Update${1/(.*)/${1:/pascalcase}/}Command};",
+            "",
+            "pub trait Update${1/(.*)/${1:/pascalcase}/}CommandHandler {",
+            "    fn handle(",
+            "        &self,",
+            "        command: Update${1/(.*)/${1:/pascalcase}/}Command,",
+            "    ) -> impl std::future::Future<Output = Result<(), Update${1/(.*)/${1:/pascalcase}/}Error>> + Send;",
+            "}"
+        ]
+    },
+    "get one entity app query handler": {
+        "scope": "rust",
+        "prefix": "qryh_app_get_one",
+        "body": [
+            "use crate::domain::{errors::GetOne${1/(.*)/${1:/pascalcase}/}Error, models::{GetOne${1/(.*)/${1:/pascalcase}/}Query, GetOne${1/(.*)/${1:/pascalcase}/}QueryResult}};",
+            "",
+            "pub trait GetOne${1/(.*)/${1:/pascalcase}/}QueryHandler {",
+            "    fn handle(",
+            "        &self,",
+            "        query: GetOne${1/(.*)/${1:/pascalcase}/}Query,",
+            "    ) -> impl std::future::Future<Output = Result<GetOne${1/(.*)/${1:/pascalcase}/}QueryResult, GetOne${1/(.*)/${1:/pascalcase}/}Error>> + Send;",
+            "}"
+        ]
+    },
+    "get all entity app query handler": {
+        "scope": "rust",
+        "prefix": "qryh_app_get_all",
+        "body": [
+            "use crate::domain::{errors::GetAll${1/(.*)/${1:/pascalcase}/}sError, models::{GetAll${1/(.*)/${1:/pascalcase}/}sQuery, GetAll${1/(.*)/${1:/pascalcase}/}sQueryResult}};",
+            "",
+            "pub trait GetAll${1/(.*)/${1:/pascalcase}/}sQueryHandler {",
+            "    fn handle(",
+            "        &self,",
+            "        query: GetAll${1/(.*)/${1:/pascalcase}/}sQuery,",
+            "    ) -> impl std::future::Future<Output = Result<Vec<GetAll${1/(.*)/${1:/pascalcase}/}sQueryResult>, GetAll${1/(.*)/${1:/pascalcase}/}sError>> + Send;",
+            "}"
+        ]
+    }
+}

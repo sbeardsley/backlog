@@ -1,5 +1,5 @@
 use clap::Args;
-use core::domain::models::CreateProjectCommand;
+use core::domain::models::{CreateProjectCommand, UpdateProjectCommand};
 use infra::app::App;
 
 #[derive(Debug, Args)]
@@ -22,7 +22,7 @@ impl From<ProjectAddArgs> for CreateProjectCommand {
     }
 }
 
-pub async fn run(project: CreateProjectCommand) {
+pub async fn run(project: UpdateProjectCommand) {
     let app = App::new("sqlite://.backlog.db").await;
-    app.create_project(project).await;
+    app.update_project(project).await;
 }

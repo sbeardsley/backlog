@@ -15,3 +15,12 @@ license = "MIT OR Apache-2.0"
 version = "0.1.0"
 authors = ["github.com/sbeardsley"]
 include = ["src/**/*.rs", "tests/**/*.rs", "LICENSE-*", "README.md"]
+
+[workspace.metadata.scripts]
+run = "cargo run"
+check = "cargo check"
+build = "cargo build"
+release = "cargo build --release"
+db_setup = "cd infra && sqlx database setup --source=../migrations"
+db_migrate = "cd infra && sqlx migrate run --source../migrations"
+db_prepare = "cd infra && cargo sqlx prepare"

@@ -1,14 +1,13 @@
-use uuid::Uuid;
-
 use crate::{
     app::contracts::CreateProjectCommandHandler,
     domain::{
-        errors::InsertProjectError,
+        errors::CreateProjectError,
         models::{CreateProjectCommand, ProjectDraft},
         usecases::CreateProjectUseCase,
     },
     repositories::CreateProjectRepositoryContract,
 };
+use uuid::Uuid;
 
 pub struct CreateProjectService<T: CreateProjectRepositoryContract> {
     create_project: crate::domain::services::CreateProjectService<T>,
@@ -23,7 +22,7 @@ impl<T: CreateProjectRepositoryContract> CreateProjectService<T> {
 }
 
 impl<T: CreateProjectRepositoryContract> CreateProjectCommandHandler for CreateProjectService<T> {
-    async fn handle(&self, command: CreateProjectCommand) -> Result<Uuid, InsertProjectError> {
+    async fn handle(&self, command: CreateProjectCommand) -> Result<Uuid, CreateProjectError> {
         match self
             .create_project
             .create_project(ProjectDraft::from(command))

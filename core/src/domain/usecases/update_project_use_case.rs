@@ -1,0 +1,13 @@
+use crate::domain::{
+    errors::UpdateProjectError,
+    models::{NewProject, ProjectPatch},
+};
+use uuid::Uuid;
+
+pub trait UpdateProjectUseCase: Send + Sync {
+    fn update_project(
+        &self,
+        project_id: Uuid,
+        project: ProjectPatch,
+    ) -> impl std::future::Future<Output = Result<NewProject, UpdateProjectError>> + Send;
+}

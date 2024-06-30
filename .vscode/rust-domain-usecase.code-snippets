@@ -1,0 +1,87 @@
+{
+    // Place your budget workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+    // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+    // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+    // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+    // Placeholders with the same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"scope": "javascript,typescript",
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+    "create entity usecase": {
+        "scope": "rust",
+        "prefix": "useca_create",
+        "body": [
+            "use crate::domain::{",
+            "    errors::Create${1/(.*)/${1:/pascalcase}/}Error,",
+            "    models::{New${1/(.*)/${1:/pascalcase}/}, ${1/(.*)/${1:/pascalcase}/}Draft},",
+            "};",
+            "",
+            "pub trait Create${1/(.*)/${1:/pascalcase}/}UseCase: Send + Sync {",
+            "    fn create_${1/(.*)/${1:/downcase}/}(",
+            "        &self,",
+            "        ${1/(.*)/${1:/downcase}/}: ${1/(.*)/${1:/pascalcase}/}Draft,",
+            "    ) -> impl std::future::Future<Output = Result<New${1/(.*)/${1:/pascalcase}/}, Create${1/(.*)/${1:/pascalcase}/}Error>> + Send;",
+            "}"
+        ]
+    },
+    "update entity usecase": {
+        "scope": "rust",
+        "prefix": "useca_update",
+        "body": [
+            "use crate::domain::{",
+            "    errors::Update${1/(.*)/${1:/pascalcase}/}Error,",
+            "    models::{New${1/(.*)/${1:/pascalcase}/}, ${1/(.*)/${1:/pascalcase}/}Patch},",
+            "};",
+            "use uuid::Uuid;",
+            "",
+            "pub trait Update${1/(.*)/${1:/pascalcase}/}UseCase: Send + Sync {",
+            "    fn update_${1/(.*)/${1:/downcase}/}(",
+            "        &self,",
+            "        ${1/(.*)/${1:/downcase}/}_id: Uuid,",
+            "        ${1/(.*)/${1:/downcase}/}: ${1/(.*)/${1:/pascalcase}/}Patch,",
+            "    ) -> impl std::future::Future<Output = Result<New${1/(.*)/${1:/pascalcase}/}, Update${1/(.*)/${1:/pascalcase}/}Error>> + Send;",
+            "}"
+        ]
+    },
+    "get one entity usecase": {
+        "scope": "rust",
+        "prefix": "useca_getone",
+        "body": [
+            "use crate::domain::{",
+            "    errors::GetOne${1/(.*)/${1:/pascalcase}/}Error,",
+            "    models::New${1/(.*)/${1:/pascalcase}/},",
+            "};",
+            "use uuid::Uuid;",
+            "",
+            "pub trait GetOne${1/(.*)/${1:/pascalcase}/}UseCase: Send + Sync {",
+            "    fn get_one_${1/(.*)/${1:/downcase}/}(",
+            "        &self,",
+            "        ${1/(.*)/${1:/downcase}/}_id: Uuid,",
+            "    ) -> impl std::future::Future<Output = Result<Option<New${1/(.*)/${1:/pascalcase}/}>, GetOne${1/(.*)/${1:/pascalcase}/}Error>> + Send;",
+            "}"
+        ]
+    },
+    "get all entity usecase": {
+        "scope": "rust",
+        "prefix": "useca_getall",
+        "body": [
+            "use crate::domain::{errors::GetAll${1/(.*)/${1:/pascalcase}/}sError, models::New${1/(.*)/${1:/pascalcase}/}};",
+            "use uuid::Uuid;",
+            "",
+            "pub trait GetAll${1/(.*)/${1:/pascalcase}/}sUseCase {",
+            "    fn get_all_${1/(.*)/${1:/downcase}/}s(",
+            "        &self,",
+            "        user_id: Uuid,",
+            "    ) -> impl std::future::Future<Output = Result<Vec<New${1/(.*)/${1:/pascalcase}/}>, GetAll${1/(.*)/${1:/pascalcase}/}sError>> + Send;",
+            "}"
+        ]
+    }
+}

@@ -1,6 +1,9 @@
 mod cli;
 use clap::{Args, Parser, Subcommand};
-use cli::project::create_project::{self, ProjectAddArgs};
+use cli::project::{
+    create_project::{self, ProjectAddArgs},
+    get_all_projects, update_project,
+};
 use core::domain::models::CreateProjectCommand;
 
 #[derive(Parser)]
@@ -35,13 +38,13 @@ enum ProjectSubcommands {
     Add(ProjectAddArgs),
 
     /// List all projects
-    ListProjects,
+    List,
 
     /// Update a project
-    UpdateProject,
+    Update,
 
     /// Delete a project
-    DeleteProject,
+    Delete,
 }
 
 #[tokio::main]
@@ -52,9 +55,9 @@ async fn main() {
             ProjectSubcommands::Add(args) => {
                 create_project::run(CreateProjectCommand::from(args)).await
             }
-            ProjectSubcommands::ListProjects => println!("Listing all projects"),
-            ProjectSubcommands::UpdateProject => println!("Updating a project"),
-            ProjectSubcommands::DeleteProject => println!("Deleting a project"),
+            ProjectSubcommands::List => get_all_projects::run().await,
+            ProjectSubcommands::Update => println!("Updating a project"),
+            ProjectSubcommands::Delete => println!("Deleting a project"),
         },
         Some(Commands::Board) => println!("Board command"),
         Some(Commands::Issue) => println!("Issue command"),

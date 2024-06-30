@@ -1,6 +1,6 @@
 use crate::{
     domain::{
-        errors::InsertProjectError,
+        errors::CreateProjectError,
         models::{NewProject, ProjectDraft},
         usecases::CreateProjectUseCase,
     },
@@ -21,7 +21,7 @@ impl<R: CreateProjectRepositoryContract> CreateProjectUseCase for CreateProjectS
     async fn create_project(
         &self,
         project: ProjectDraft,
-    ) -> Result<NewProject, InsertProjectError> {
+    ) -> Result<NewProject, CreateProjectError> {
         self.repository.insert_project(project).await
     }
 }

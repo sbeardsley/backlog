@@ -23,12 +23,19 @@ impl SqliteConnectionPool {
     }
 
     pub async fn connect(&self) -> Result<PoolConnection<Sqlite>, ConnectionError> {
-        Ok(self
+        let mut conn = self
             .pool
             .clone()
             .acquire()
             .await
-            .map_err(|_| ConnectionError::ConnectionFailed)?)
+            .map_err(|_| ConnectionError::ConnectionFailed)?;
+
+        sqlx::query!(r#"PRAGMA foreign_keys = ON;"#)
+            .execute(&mut *conn)
+            .await
+            .map_err(|_| ConnectionError::ConnectionFailed)?;
+
+        Ok(conn)
     }
 
     pub async fn ensure_db_exists(url: &str) -> Result<(), ConnectionError> {
